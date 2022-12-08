@@ -1,0 +1,442 @@
+package com.simplilearn.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Admin_Info")
+public class Admin {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int adminId;
+	
+	private String adminUsername;
+	
+	private String adminPassword;
+	
+	public Admin(String adminUsername, String adminPassword) {
+		super();
+		this.adminUsername = adminUsername;
+		this.adminPassword = adminPassword;
+	}
+	public Admin() {
+		super();
+	}
+	public Admin(int adminId, String adminUsername, String adminPassword) {
+		super();
+		this.adminId = adminId;
+		this.adminUsername = adminUsername;
+		this.adminPassword = adminPassword;
+	}
+	public int getAdminId() {
+		return adminId;
+	}
+	public void setAdminId(int adminId) {
+		this.adminId = adminId;
+	}
+	public String getAdminUsername() {
+		return adminUsername;
+	}
+	public void setAdminUsername(String adminUsername) {
+		this.adminUsername = adminUsername;
+	}
+	public String getAdminPassword() {
+		return adminPassword;
+	}
+	public void setAdminPassword(String adminPassword) {
+		this.adminPassword = adminPassword;
+	}
+	@Override
+	public String toString() {
+		return "Admin [adminId=" + adminId + ", adminUsername=" + adminUsername + ", adminPassword=" + adminPassword
+				+ "]";
+	}
+	
+	
+	
+	
+}
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+package com.simplilearn.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="product_Details")
+public class Product {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int productId;
+	
+	@Column(name="product_Name")
+	private String productName;
+	private String productDescription;
+	private String productType;
+	private int productPrice;
+	
+	
+	
+	
+	public Product() {
+		super();
+	}
+	public Product(String productName, String productDescription, String productType, int productPrice) {
+		super();
+		this.productName = productName;
+		this.productDescription = productDescription;
+		this.productType = productType;
+		this.productPrice = productPrice;
+	}
+	public int getProductId() {
+		return productId;
+	}
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	public String getProductDescription() {
+		return productDescription;
+	}
+	public void setProductDescription(String productDescription) {
+		this.productDescription = productDescription;
+	}
+	public String getProductType() {
+		return productType;
+	}
+	public void setProductType(String productType) {
+		this.productType = productType;
+	}
+	public int getProductPrice() {
+		return productPrice;
+	}
+	public void setProductPrice(int productPrice) {
+		this.productPrice = productPrice;
+	}
+	
+	
+
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+package com.simplilearn.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="user_info")
+public class User {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int userId;
+	
+	private String userName;
+	private String password;
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public User(String userName, String password) {
+		super();
+		this.userName = userName;
+		this.password = password;
+	}
+	public User() {
+		super();
+	}
+	public User(int userId, String userName, String password) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.password = password;
+	}
+	
+	
+	
+
+}
+
+
+
+package com.simplilearn.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.simplilearn.entity.Admin;
+
+@Repository
+public interface AdminRepository extends JpaRepository<Admin, Integer>{
+	
+	
+
+}
+
+
+package com.simplilearn.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.simplilearn.entity.Product;
+
+@Repository
+public interface ProductRepository extends JpaRepository<Product, Integer> {
+	
+	
+	
+
+}
+
+
+
+package com.simplilearn.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.simplilearn.entity.User;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Integer>{
+
+}
+
+
+
+
+package com.simplilearn.service;
+
+import java.util.List;
+
+import com.simplilearn.entity.Admin;
+
+public interface AdminService {
+	
+	public List<Admin> adminList();
+	
+	public Admin updatePassword(int id);
+	
+	public void AddPassword(Admin admin);
+	
+	
+
+}
+
+
+
+package com.simplilearn.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.simplilearn.entity.Admin;
+import com.simplilearn.repository.AdminRepository;
+
+@Service
+public class AdminServiceImp implements AdminService{
+
+	  @Autowired
+	  AdminRepository adminRepository;
+	
+	public List<Admin> adminList() {
+		List<Admin> list= adminRepository.findAll();
+		
+		
+		
+		return list ;
+	}
+
+
+	public Admin updatePassword(int id) {
+		Optional<Admin> optional= adminRepository.findById(id);
+		Admin admin=null;
+		if(optional.isPresent()) {
+			admin=optional.get();
+		}
+		else {
+			throw new ArithmeticException("id is not found");
+		}
+		return admin;
+	}
+
+
+	@Override
+	public void AddPassword(Admin admin) {
+		adminRepository.save(admin);
+		
+	}
+
+
+	
+
+}
+
+
+
+package com.simplilearn.service;
+
+import java.util.List;
+
+import com.simplilearn.entity.Product;
+
+public interface ProductService {
+	public List<Product> getAllProducts();
+	
+	public void addProducts(Product product);
+	
+	public Product updateProduct (int id);
+	
+	public void deleteProduct(int id);
+	
+	
+}
+
+
+
+package com.simplilearn.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.simplilearn.entity.Product;
+import com.simplilearn.repository.ProductRepository;
+
+@Service
+public class ProductServiceImp implements ProductService{
+
+	@Autowired
+	private ProductRepository productRepository;
+	
+	public List<Product> getAllProducts() {
+		
+		return productRepository.findAll();
+	}
+
+	@Override
+	public void addProducts(Product product) {
+		productRepository.save(product);
+		
+	}
+
+	@Override
+	public Product updateProduct(int id) {
+		Optional<Product> optional= productRepository.findById(id);
+		Product product=null;
+		if(optional.isPresent()) {
+			product=optional.get();
+		}
+		else {
+			throw new ArithmeticException("id is not present ");
+		}
+		
+		
+		return product;
+	}
+
+	@Override
+	public void deleteProduct(int id) {
+		productRepository.deleteById(id);
+		
+		
+	}
+	
+
+}
+
+
+
+package com.simplilearn.service;
+
+import java.util.List;
+
+import com.simplilearn.entity.User;
+
+public interface UserService {
+	
+	public List<User> getAllUsers();
+	
+
+	
+	
+}
+
+
+package com.simplilearn.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.simplilearn.entity.User;
+import com.simplilearn.repository.UserRepository;
+
+@Service
+public class UserServiceImp implements UserService{
+
+	@Autowired
+	UserRepository repository;
+	
+	public List<User> getAllUsers() {
+		
+		List<User> list= repository.findAll();
+		
+		return list;
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
